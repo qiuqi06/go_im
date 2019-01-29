@@ -2,10 +2,9 @@ package main
 
 import (
 	"common"
-	"encoding/binary"
-	"encoding/json"
 	"fmt"
 	"net"
+	"encoding/json"
 )
 
 func main() {
@@ -33,9 +32,7 @@ func main() {
 func login(userId int, userPwd string) (err error) {
 	print("err")
 	conn, err := net.Dial("tcp", "localhost:8089")
-	if err != nil {
-
-	}
+	defer conn.Close()
 	var msg common.Message
 	msg.Type = common.LoginMsgType
 
@@ -44,18 +41,13 @@ func login(userId int, userPwd string) (err error) {
 	loginMsg.UserName = "qq"
 	loginMsg.UserPwd = "123"
 
-	data, _ := json.Marshal(loginMsg)
-	msg.Data = string(data)
+	bytes, err := json.Marshal(loginMsg)
+	msg.Data=string(bytes)
 
-	var bytes [4]byte
-
-	pkgLen := uint32(len(data))
-
-	binary.BigEndian.PutUint32(bytes[0:4], pkgLen)
-
-	n, _ := conn.Write(bytes[:])
-	println(n)
-
-	print(conn)
-	return nil
+	transfer := common.Transfer{
+		Conn: conn,
+	}
+	datas, err := json.Marshal(msg)
+	transfer.WritePkg( datas)
+	return
 }

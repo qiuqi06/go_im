@@ -3,6 +3,7 @@ package common
 const (
 	LoginMsgType="login"
 	LoginResMsgType="res"
+	RegisterMsgType="register"
 )
 
 type Message struct{
