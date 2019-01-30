@@ -1,15 +1,16 @@
-package main
+package process
 
 import (
 	"common"
 	"io"
 	"net"
 )
+
 type Processor struct {
 	Conn net.Conn
 }
 
-func (this *Processor) process() (err error){
+func (this *Processor) Process() (err error) {
 	defer this.Conn.Close()
 	for {
 		transfer := common.Transfer{
@@ -25,9 +26,9 @@ func (this *Processor) process() (err error){
 				return
 			}
 		}
-		userProcessor:= UserProcessor{
-			Conn:this.Conn,
+		userProcessor := UserProcess{
+			Conn: this.Conn,
 		}
-		userProcessor.serverProcessMsg(&msg)
+		go userProcessor.ServerProcessMsg(&msg)
 	}
 }

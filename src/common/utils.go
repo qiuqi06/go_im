@@ -42,7 +42,7 @@ func(this *Transfer) WritePkg( data []byte) (err error) {
 
 	n, err = this.Conn.Write(data)
 	if uint32(n) != pkgLen {
-		fmt.Println("server write body error")
+		fmt.Println("process write body error")
 		return
 	}
 	return

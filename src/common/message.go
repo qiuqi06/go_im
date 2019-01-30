@@ -18,4 +18,6 @@ type LoginMsg struct {
 type LoginResMsg struct {
 	Code int
 	Error string
+	Users []int
 }
+

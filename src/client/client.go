@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"encoding/json"
+	"unsafe"
 )
 
 func main() {
@@ -36,6 +37,10 @@ func login(userId int, userPwd string) (err error) {
 	var msg common.Message
 	msg.Type = common.LoginMsgType
 
+	var  x unsafe.Pointer
+	x = unsafe.Pointer(&msg)
+	println(x)
+
 	var loginMsg common.LoginMsg
 	loginMsg.UserId = 1
 	loginMsg.UserName = "qq"
@@ -47,7 +52,9 @@ func login(userId int, userPwd string) (err error) {
 	transfer := common.Transfer{
 		Conn: conn,
 	}
-	datas, err := json.Marshal(msg)
-	transfer.WritePkg( datas)
+	dataSlice, err := json.Marshal(msg)
+	transfer.WritePkg( dataSlice)
+
 	return
+
 }

@@ -1,9 +1,10 @@
-package main
+package src
 
 import (
 	"fmt"
 	"net"
 	"os"
+	"process"
 )
 
 func main() {
@@ -18,10 +19,10 @@ func main() {
 			fmt.Println("Error accepting client: ", err.Error())
 			os.Exit(0)
 		}
-		processor := Processor{
+		processor := process.Processor{
 			Conn: conn,
 		}
-		go processor.process()
+		go processor.Process()
 		print(conn)
 	}
 }

@@ -1,4 +1,4 @@
-package main
+package process
 
 import (
 	"net"
@@ -6,24 +6,27 @@ import (
 	"encoding/json"
 )
 
-type UserProcessor struct {
+type UserProcess struct {
 	Conn net.Conn
+	UserId int
 }
 
-func (this *UserProcessor) serverProcessMsg(msg *common.Message) (err error) {
+func (this *UserProcess) ServerProcessMsg(msg *common.Message) (err error) {
 	switch msg.Type {
 	case common.RegisterMsgType:
-		this.serverLogin(msg)
+		this.ServerLogin(msg)
 	case common.LoginMsgType:
 	default:
 		return
 	}
 	return
 }
-func (this *UserProcessor) serverLogin(message *common.Message) (err error) {
+func (this *UserProcess) ServerLogin(message *common.Message) (err error) {
 	var loginMsg common.LoginMsg
 	err = json.Unmarshal([]byte(message.Data), &loginMsg)
 	println(loginMsg)
+    //todo去数据库获取
+    userMgr.AddOnlineUser(this)
 
 	var loginRes common.LoginResMsg
 	loginRes.Code = 100
@@ -35,3 +38,4 @@ func (this *UserProcessor) serverLogin(message *common.Message) (err error) {
 	transfer.WritePkg(data)
 	return
 }
+
