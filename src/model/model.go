@@ -11,12 +11,6 @@ type CurrentUser struct {
 	Conn net.Conn
 }
 
-var CurUser CurrentUser
-
-func init() {
-	CurUser = CurrentUser{
-		Conn: nil,
-		User: nil,
-	}
+func (this *CurrentUser) Fc()  {
 
 }

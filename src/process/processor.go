@@ -4,12 +4,14 @@ import (
 	"common"
 	"io"
 	"net"
+	"model"
 )
 
 type Processor struct {
 	Conn net.Conn
 }
 
+var CurrentUser model.CurrentUser
 func (this *Processor) Process() (err error) {
 	defer this.Conn.Close()
 	for {
